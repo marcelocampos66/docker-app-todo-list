@@ -34,6 +34,32 @@ class TodoApi {
       .catch((err) => err);
   }
 
+  public async updateTodoStatus(id: string, newInfos: ITodo) {
+    const endpoint = `${this.url}/todos/${id}`;
+    return fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': this.content,
+      },
+      body: JSON.stringify(newInfos),
+    })
+      .then((response) => response.json())
+      .then((data) => data)
+      .catch((err) => err);
+  }
+
+  public async deleteTodo(id: string) {
+    const endpoint = `${this.url}/todos/${id}`;
+    return fetch(endpoint, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': this.content,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => data)
+      .catch((err) => err);
+  }
 
 }
 

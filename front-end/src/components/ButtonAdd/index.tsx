@@ -5,7 +5,7 @@ import { newTodoInitialState } from '../../context/AppContext';
 import Styled from './S.ButtonAdd';
 
 const ButtonAdd: React.FC = () => {
-  const { todo, setTodo, todos } = useContext(AppContext);
+  const { todo, setTodo, todos, setTodos } = useContext(AppContext);
 
   const setOrder = () => {
     if (todos.length === 0) {
@@ -19,6 +19,12 @@ const ButtonAdd: React.FC = () => {
     const currentTodo = setOrder();
     await TodoApi.saveTodo(currentTodo);
     setTodo(newTodoInitialState);
+    await updateList();
+  }
+
+  const updateList = async () => {
+    const updatedTodos = await TodoApi.getTodos();
+    setTodos(updatedTodos);
   }
 
   return (

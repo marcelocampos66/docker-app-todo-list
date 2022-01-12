@@ -9,7 +9,8 @@ const TodoList: React.FC = () => {
 
   const getTodos = async () => {
     const allTodos: ITodoRegistred[] | [] = await TodoApi.getTodos();
-    const ordenedTodos = allTodos.sort((a, b) => a.order - b.order);
+    const ordenedTodos: ITodoRegistred[] | []  = allTodos
+      .sort((a, b) => a.order - b.order);
     setTodos(ordenedTodos);
   }
 
@@ -20,7 +21,13 @@ const TodoList: React.FC = () => {
   return (
     <Styled.Section>
       {
-        todos.map((todo) => <TodoCard  key={ todo._id } todo={ todo } />)
+        todos.map((todo, index) => (
+          <TodoCard
+            key={ todo._id }
+            todo={ todo }
+            todoIndex={ index + 1 }
+          />
+        ))
       }
     </Styled.Section>
   );
