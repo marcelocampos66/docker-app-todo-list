@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import AppContext from './AppContext';
-// import { DEFAULT_STATE } from './AppContext';
+import { DEFAULT_STATE } from './AppContext';
 
 const Provider: React.FC = ({ children }) => {
-  const contextValue = {};
+  const [todo, setTodo] = useState<ITodo>(DEFAULT_STATE.todo);
+  const [todos, setTodos] = useState<[] | ITodoRegistred[]>(DEFAULT_STATE.todos);
+
+  const contextValue = {
+    todo,
+    setTodo,
+    todos,
+    setTodos,
+  };
 
   return (
     <AppContext.Provider value={ contextValue }>
