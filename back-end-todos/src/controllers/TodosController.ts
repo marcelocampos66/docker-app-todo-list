@@ -34,8 +34,8 @@ class TodosController {
     res: Response,
     _next: NextFunction,
   ) => {
-    const { body: { order, todo, isDone } } = req;
-    const result = await this.service.register({ order, todo, isDone });
+    const { body: { order, todo, priority, isDone } } = req;
+    const result = await this.service.register({ order, todo, priority, isDone });
     return res.status(201).json(result);
   }
 
@@ -68,9 +68,12 @@ class TodosController {
   ) => {
     const {
       params: { id },
-      body: { order, todo, isDone },
+      body: { order, todo, priority, isDone },
     } = req;
-    const result = await this.service.update(id, { order, todo, isDone });
+    const result = await this.service.update(
+      id,
+      { order, todo, priority, isDone },
+    );
     return res.status(200).json(result);
   }
 
