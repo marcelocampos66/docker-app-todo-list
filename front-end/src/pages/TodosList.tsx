@@ -6,7 +6,7 @@ import TodoList from '../components/TodoList';
 const TodosList: React.FC = () => {
   return (
     <Container>
-      <h1>Todos</h1>
+      <h1>To Do List</h1>
       <TodoForm />
       <TodoList />
     </Container>

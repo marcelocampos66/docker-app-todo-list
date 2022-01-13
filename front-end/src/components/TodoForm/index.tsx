@@ -12,13 +12,13 @@ const TodoForm: React.FC = () => {
     <Styled.Section>
       <TextInput
         name="todo"
-        labelText="Type your todo:"
+        labelText="Type your todo: "
         placeholder=""
         value={ todo['todo'] }
       />
       <SelectInput
         name="priority"
-        labelText="Select todo priority:"
+        labelText="Select todo priority: "
         options={ ['low', 'medium', 'high'] }
         value={ todo['priority'] }
       />

@@ -22,20 +22,22 @@ const SelectInput: React.FC<IProps> = ({
   }
 
   return (
-    <Styled.Label>
-      { labelText }
-      <Styled.Input
-        name={ name }
-        onChange={
-          (e: React.ChangeEvent<HTMLSelectElement>) => handleChange(e)
-        }
-        value={ value }
-      >
-        { options.map((option) => (
-          <option key={ option }>{ option }</option>
-        )) }
-      </Styled.Input>
-    </Styled.Label>
+    <Styled.Div>
+      <Styled.Label>
+        { labelText }
+        <Styled.Select
+          name={ name }
+          onChange={
+            (e: React.ChangeEvent<HTMLSelectElement>) => handleChange(e)
+          }
+          value={ value }
+        >
+          { options.map((option) => (
+            <option key={ option }>{ option }</option>
+          )) }
+        </Styled.Select>
+      </Styled.Label>
+    </Styled.Div>
   );
 }
 

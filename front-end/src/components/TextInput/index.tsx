@@ -22,18 +22,20 @@ const TextInput: React.FC<IProps> = ({
   }
 
   return (
-    <Styled.Label>
-      { labelText }
-      <Styled.Input
-        type="text"
-        onChange={
-          (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)
-        }
-        placeholder={ placeholder }
-        name={ name }
-        value={ value }
-      />
-    </Styled.Label>
+    <Styled.Div>
+      <Styled.Label>
+        { labelText }
+        <Styled.Input
+          type="text"
+          onChange={
+            (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)
+          }
+          placeholder={ placeholder }
+          name={ name }
+          value={ value }
+        />
+      </Styled.Label>
+    </Styled.Div>
   );
 }
 

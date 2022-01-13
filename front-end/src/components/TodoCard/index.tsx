@@ -31,22 +31,31 @@ const TodoCard: React.FC<IProps> = ({ todo, todoIndex }) => {
 
   return (
     <Styled.Div>
-      <Styled.P>{ todoIndex }</Styled.P>
-      <Styled.P>{ todo.todo }</Styled.P>
-      <Styled.P>{ todo.priority }</Styled.P>
-      <Styled.P>{ todo.isDone }</Styled.P>
-      <Styled.Button
-        type="button"
-        onClick={ () => updateTodo() }
-      >
-        { todo.isDone ? 'Done' : 'Pending' }
-      </Styled.Button>
-      <Styled.Button
-        type="button"
-        onClick={ () => deleteTodo() }
-      >
-        X
-      </Styled.Button>
+      <Styled.DivInfos>
+        <Styled.DivOrder>
+          <Styled.P>{ todoIndex }</Styled.P>
+        </Styled.DivOrder>
+        <Styled.DivTodo>
+          <Styled.P>{ todo.todo }</Styled.P>
+        </Styled.DivTodo>
+        <Styled.DivPriority>
+          <Styled.P>{ todo.priority }</Styled.P>
+        </Styled.DivPriority>
+      </Styled.DivInfos>
+      <Styled.DivButtons>
+        <Styled.Button
+          type="button"
+          onClick={ () => updateTodo() }
+        >
+          { todo.isDone ? 'Done' : 'Pending' }
+        </Styled.Button>
+        <Styled.Button
+          type="button"
+          onClick={ () => deleteTodo() }
+        >
+          X
+        </Styled.Button>
+      </Styled.DivButtons>
     </Styled.Div>
   );
 }
