@@ -1,0 +1,40 @@
+version: '3'
+services:
+  frontend:
+    build: './front-end'
+    image: todo-list-frontend
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - "backend-todos"
+    networks:
+      - todo-app
+    restart: always
+
+  backend-todos:
+    build: './back-end-todos'
+    image: todo-list-backend-todos
+    container_name: backend-todos
+    networks:
+      - todo-app
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGO_DB_URL=mongodb://database:27017
+      - MONGO_DB=todos
+    depends_on:
+      - "database"
+    restart: always
+
+  database:
+    image: mongo
+    container_name: database-mongodb
+    networks:
+      - todo-app
+    restart: always
+
+networks:
+    todo-app:
+      driver: bridge
