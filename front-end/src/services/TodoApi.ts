@@ -3,7 +3,7 @@ class TodoApi {
   private content: string;
 
   constructor() {
-    this.url = 'http://localhost:3001';
+    this.url = 'http://0.0.0.0:3001';
     this.content = 'application/json';
   }
 
