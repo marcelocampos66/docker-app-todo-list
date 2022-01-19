@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Container from '../components/Container';
-import TodoForm from '../components/TodoForm';
-import TodoList from '../components/TodoList';
+import LoginForm from '../components/LoginForm';
 
-const TodosList: React.FC = () => {
+const Login: React.FC = () => {
   const history = useHistory();
 
   const verifyIfAlreadyLogged = () => {
-    const user: string | null = localStorage.getItem('user');
-    if (!user) {
-      history.push('/');
+    const content = localStorage.getItem('user');
+    if (content) {
+      history.push('/todos');
     }
   };
 
@@ -20,11 +19,9 @@ const TodosList: React.FC = () => {
 
   return (
     <Container>
-      <h1>To Do List</h1>
-      <TodoForm />
-      <TodoList />
+      <LoginForm />
     </Container>
   );
 }
 
-export default TodosList;
+export default Login;

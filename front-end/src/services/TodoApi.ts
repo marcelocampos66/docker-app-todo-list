@@ -7,12 +7,13 @@ class TodoApi {
     this.content = 'application/json';
   }
 
-  public async saveTodo(newTodo: ITodo) {
+  public async saveTodo(newTodo: ITodo, token: string) {
     const endpoint = `${this.url}/todos`;
     return fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': this.content,
+        'Authorization': token,
       },
       body: JSON.stringify(newTodo),
     })
@@ -21,12 +22,13 @@ class TodoApi {
       .catch((err) => err);
   }
 
-  public async getTodos() {
+  public async getTodos(token: string) {
     const endpoint = `${this.url}/todos`;
     return fetch(endpoint, {
       method: 'GET',
       headers: {
         'Content-Type': this.content,
+        'Authorization': token,
       },
     })
       .then((response) => response.json())
@@ -48,12 +50,13 @@ class TodoApi {
       .catch((err) => err);
   }
 
-  public async deleteTodo(id: string) {
+  public async deleteTodo(id: string, token: string) {
     const endpoint = `${this.url}/todos/${id}`;
     return fetch(endpoint, {
       method: 'DELETE',
       headers: {
         'Content-Type': this.content,
+        'Authorization': token,
       },
     })
       .then((response) => response.json())

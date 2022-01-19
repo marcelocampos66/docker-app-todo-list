@@ -3,6 +3,7 @@ interface INewTodo {
   todo: string;
   priority: string;
   isDone: boolean;
+  userId: string;
 }
 
 interface IUpdateTodo {
@@ -10,6 +11,7 @@ interface IUpdateTodo {
   todo: string;
   priority: string;
   isDone: boolean;
+  userId: string;
 }
 
 interface IDeleteReponse {

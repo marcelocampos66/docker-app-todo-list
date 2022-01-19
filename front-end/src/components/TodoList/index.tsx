@@ -7,8 +7,10 @@ import Styled from './S.TodoList';
 const TodoList: React.FC = () => {
   const { todos, setTodos } = useContext(AppContext);
 
+  const user: ILocalStorage = JSON.parse(localStorage.getItem('user')!);
+
   const getTodos = async () => {
-    const allTodos: ITodoRegistred[] | [] = await TodoApi.getTodos();
+    const allTodos: ITodoRegistred[] | [] = await TodoApi.getTodos(user.token);
     const ordenedTodos: ITodoRegistred[] | []  = allTodos
       .sort((a, b) => a.order - b.order);
     setTodos(ordenedTodos);
@@ -26,6 +28,7 @@ const TodoList: React.FC = () => {
             key={ todo._id }
             todo={ todo }
             todoIndex={ index + 1 }
+            token={ user.token }
           />
         ))
       }

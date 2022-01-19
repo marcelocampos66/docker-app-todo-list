@@ -1,11 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express';
+import Middlewares from '../middlewares/Middlewares';
 import { TodosService } from '../services/TodosService';
 
-class TodosController {
+class TodosController extends Middlewares {
   public router: express.Router;
   private service: TodosService;
 
   constructor(service: TodosService) {
+    super();
     this.router = express.Router();
     this.service = service;
     this.initializeRouters();
@@ -13,18 +15,22 @@ class TodosController {
 
   private initializeRouters(): void {
     this.router.post('/', [
+      this.validateJWT,
       this.register,
     ]);
     this.router.get('/', [
+      this.validateJWT,
       this.getAll,
     ]);
     this.router.get('/:id', [
+      this.validateJWT,
       this.getById,
     ]);
     this.router.put('/:id', [
       this.update,
     ]);
     this.router.delete('/:id', [
+      this.validateJWT,
       this.delete,
     ]);
   }
@@ -34,17 +40,22 @@ class TodosController {
     res: Response,
     _next: NextFunction,
   ) => {
-    const { body: { order, todo, priority, isDone } } = req;
-    const result = await this.service.register({ order, todo, priority, isDone });
+    const {
+      body: { order, todo, priority, isDone },
+      payload: { id },
+    } = req;
+    const todoData = { order, todo, priority, isDone, userId: id };
+    const result = await this.service.register(todoData);
     return res.status(201).json(result);
   }
 
   private getAll = async (
-    _req: Request,
+    req: Request,
     res: Response,
     _next: NextFunction,
   ) => {
-    const result = await this.service.getAll();
+    const { payload: { id } } = req;
+    const result = await this.service.getAll(id);
     return res.status(200).json(result);
   }
 
@@ -53,8 +64,8 @@ class TodosController {
     res: Response,
     next: NextFunction,
   ) => {
-    const { params: { id } } = req;
-    const result = await this.service.getById(id);
+    const { params: { id }, payload: { id: userId } } = req;
+    const result = await this.service.getById(id, userId);
     if (result.message) {
       return next({ status: 404, message: result.message });
     }
@@ -68,11 +79,11 @@ class TodosController {
   ) => {
     const {
       params: { id },
-      body: { order, todo, priority, isDone },
+      body: { order, todo, priority, isDone, userId },
     } = req;
     const result = await this.service.update(
       id,
-      { order, todo, priority, isDone },
+      { order, todo, priority, isDone, userId },
     );
     return res.status(200).json(result);
   }
@@ -82,8 +93,8 @@ class TodosController {
     res: Response,
     _next: NextFunction,
   ) => {
-    const { params: { id } } = req;
-    const result = await this.service.delete(id);
+    const { params: { id }, payload: { id: userId } } = req;
+    const result = await this.service.delete(id, userId);
     return res.status(200).json(result);
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Styled from './S.TextInput';
+import Styled from './S.TextInputLogin';
 
 interface IProps {
   type: string;
@@ -8,6 +8,7 @@ interface IProps {
   placeholder: string;
   value: string;
   handleChange: onChange;
+  maxLength: number | undefined;
 }
 
 const TextInput: React.FC<IProps> = ({
@@ -17,6 +18,7 @@ const TextInput: React.FC<IProps> = ({
   placeholder,
   value,
   handleChange,
+  maxLength,
 }) => {
   return (
     <Styled.Div>
@@ -30,6 +32,7 @@ const TextInput: React.FC<IProps> = ({
           placeholder={ placeholder }
           name={ name }
           value={ value }
+          maxLength={ maxLength }
         />
       </Styled.Label>
     </Styled.Div>
