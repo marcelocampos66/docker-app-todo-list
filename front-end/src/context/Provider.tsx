@@ -9,6 +9,7 @@ const Provider: React.FC = ({ children }) => {
   const [register, setRegister] =
     useState<IRegister>(DEFAULT_STATE.register);
   const [login, setLogin] = useState<ILogin>(DEFAULT_STATE.login);
+  const [name, setName] = useState<string>(DEFAULT_STATE.name);
 
   const contextValue = {
     todo,
@@ -19,6 +20,8 @@ const Provider: React.FC = ({ children }) => {
     setRegister,
     login,
     setLogin,
+    name,
+    setName,
   };
 
   return (

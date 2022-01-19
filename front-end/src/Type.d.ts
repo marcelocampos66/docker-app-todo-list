@@ -7,6 +7,8 @@ interface IAppContext {
   setRegister: React.Dispatch<React.SetStateAction<IRegister>>;
   login: ILogin;
   setLogin: React.Dispatch<React.SetStateAction<ILogin>>;
+  name: string;
+  setName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface ITodo {

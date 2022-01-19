@@ -28,6 +28,8 @@ export const DEFAULT_STATE = {
   setRegister: () => {},
   login: loginInitialState,
   setLogin: () => {},
+  name: '',
+  setName: () => {},
 };
 
 const AppContext = createContext<IAppContext>(DEFAULT_STATE);

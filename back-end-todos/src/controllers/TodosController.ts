@@ -54,9 +54,9 @@ class TodosController extends Middlewares {
     res: Response,
     _next: NextFunction,
   ) => {
-    const { payload: { id } } = req;
-    const result = await this.service.getAll(id);
-    return res.status(200).json(result);
+    const { payload } = req;
+    const result = await this.service.getAll(payload.id);
+    return res.status(200).json({ name: payload.name, todos: result });
   }
 
   private getById = async (

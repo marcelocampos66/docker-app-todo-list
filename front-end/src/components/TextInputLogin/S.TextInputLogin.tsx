@@ -9,7 +9,7 @@ class Styled {
   `;
 
   Label = styled.label`
-    width: 50%;
+    width: 30%;
     display: flex;
     justify-content: center;
     flex-direction: column;
