@@ -18,8 +18,9 @@ const TodoForm: React.FC = () => {
   }
 
   const updateList = async (token: string) => {
-    const updatedTodos = await TodoApi.getTodos(token);
-    setTodos(updatedTodos);
+    const response: { name: string, todos: ITodoRegistred[] | [] } =
+      await TodoApi.getTodos(token);
+    setTodos(response.todos);
   }
 
   const handleClick = async () => {

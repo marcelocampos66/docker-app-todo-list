@@ -26,8 +26,9 @@ const TodoCard: React.FC<IProps> = ({ todo, todoIndex, token }) => {
   }
 
   const updateList = async () => {
-    const updatedTodos = await TodoApi.getTodos(token);
-    setTodos(updatedTodos);
+    const response: { name: string, todos: ITodoRegistred[] | [] } =
+      await TodoApi.getTodos(token);
+    setTodos(response.todos);
   }
 
   return (

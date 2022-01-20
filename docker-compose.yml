@@ -8,8 +8,26 @@ services:
       - "3000:80"
     depends_on:
       - "backend-todos"
+      - "backend-users"
     networks:
       - todo-app
+    restart: always
+
+  backend-users:
+    build: './back-end-users'
+    image: todo-list-backend-users
+    container_name: backend-users
+    networks:
+      - todo-app
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGO_DB_URL=mongodb://users-database:27017
+      - MONGO_DB=users
+      - JWT_SECRET=valhallaawaits
+    depends_on:
+      - "users-database"
     restart: always
 
   backend-todos:
@@ -22,15 +40,23 @@ services:
       - "3001:3001"
     environment:
       - PORT=3001
-      - MONGO_DB_URL=mongodb://database:27017
+      - MONGO_DB_URL=mongodb://todos-database:27017
       - MONGO_DB=todos
+      - JWT_SECRET=valhallaawaits
     depends_on:
-      - "database"
+      - "todos-database"
     restart: always
 
-  database:
+  users-database:
     image: mongo
-    container_name: database-mongodb
+    container_name: database-mongodb-users
+    networks:
+      - todo-app
+    restart: always
+
+  todos-database:
+    image: mongo
+    container_name: database-mongodb-todos
     networks:
       - todo-app
     restart: always

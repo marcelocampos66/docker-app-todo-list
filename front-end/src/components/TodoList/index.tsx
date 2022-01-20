@@ -13,7 +13,7 @@ const TodoList: React.FC = () => {
     const response: { name: string, todos: ITodoRegistred[] | [] } =
       await TodoApi.getTodos(user.token);
     setName(response.name);
-    const ordenedTodos: ITodoRegistred[] | []  = response.todos
+    const ordenedTodos: ITodoRegistred[] | []  = [...response.todos]
       .sort((a, b) => a.order - b.order);
     setTodos(ordenedTodos);
   }
