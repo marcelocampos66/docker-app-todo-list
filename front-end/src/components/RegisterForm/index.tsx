@@ -3,12 +3,18 @@ import { useHistory } from 'react-router-dom';
 import AppContext from '../../context/AppContext';
 import TextInput from '../TextInputLogin';
 import Button from '../Button';
+import PopUpMessage from '../PopUpMessage';
 import Helpers from '../../helpers/Helpers';
 import UsersApi from '../../services/UsersApi';
 import Styled from './S.RegisterForm';
 
 const RegisterForm: React.FC = () => {
-  const { register, setRegister } = useContext(AppContext);
+  const {
+    register,
+    setRegister,
+    errorMessage,
+    setErrorMessage,
+  } = useContext(AppContext);
   const [disabled, setDisabled] = useState(true);
   const history = useHistory();
 
@@ -19,7 +25,7 @@ const RegisterForm: React.FC = () => {
     };
     const { message } = await UsersApi.register(newUser);
     if (message) {
-      console.log(message);
+      setErrorMessage(message);
       return;
     }
     history.push('/');
@@ -40,6 +46,7 @@ const RegisterForm: React.FC = () => {
 
   return (
     <Styled.Section>
+      { errorMessage && (<PopUpMessage />) }
       <TextInput
         type="text"
         name="name"

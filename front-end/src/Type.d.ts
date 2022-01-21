@@ -9,6 +9,8 @@ interface IAppContext {
   setLogin: React.Dispatch<React.SetStateAction<ILogin>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
+  errorMessage: string;
+  setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface ITodo {

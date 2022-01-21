@@ -10,6 +10,8 @@ const Provider: React.FC = ({ children }) => {
     useState<IRegister>(DEFAULT_STATE.register);
   const [login, setLogin] = useState<ILogin>(DEFAULT_STATE.login);
   const [name, setName] = useState<string>(DEFAULT_STATE.name);
+  const [errorMessage, setErrorMessage] =
+    useState<string>(DEFAULT_STATE.errorMessage);
 
   const contextValue = {
     todo,
@@ -22,6 +24,8 @@ const Provider: React.FC = ({ children }) => {
     setLogin,
     name,
     setName,
+    errorMessage,
+    setErrorMessage,
   };
 
   return (

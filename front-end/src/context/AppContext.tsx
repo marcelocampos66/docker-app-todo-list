@@ -30,6 +30,8 @@ export const DEFAULT_STATE = {
   setLogin: () => {},
   name: '',
   setName: () => {},
+  errorMessage: '',
+  setErrorMessage: () => {},
 };
 
 const AppContext = createContext<IAppContext>(DEFAULT_STATE);

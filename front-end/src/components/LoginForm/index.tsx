@@ -3,12 +3,18 @@ import { Link, useHistory } from 'react-router-dom';
 import AppContext from '../../context/AppContext';
 import TextInput from '../TextInputLogin';
 import Button from '../Button';
+import PopUpMessage from '../PopUpMessage';
 import Helpers from '../../helpers/Helpers';
 import UsersApi from '../../services/UsersApi';
 import Styled from './S.LoginForm';
 
 const LoginForm: React.FC = () => {
-  const { login, setLogin } = useContext(AppContext);
+  const {
+    login,
+    setLogin,
+    errorMessage,
+    setErrorMessage,
+  } = useContext(AppContext);
   const [disabled, setDisabled] = useState(true);
   const history = useHistory();
 
@@ -16,7 +22,7 @@ const LoginForm: React.FC = () => {
     const { token }: { token: string | undefined } =
       await UsersApi.login(login);
     if (!token) {
-      console.log('Invalid email or password');
+      setErrorMessage('Invalid email or password');
       return;
     }
     const localStorageData = { token };
@@ -39,6 +45,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <Styled.Section>
+      { errorMessage && <PopUpMessage /> }
       <Styled.H1>Login</Styled.H1>
       <TextInput
         type="text"
