@@ -6,13 +6,14 @@ import Styled from './S.TodoCard';
 interface IProps {
   todo: ITodoRegistred;
   todoIndex: number;
+  token: string;
 }
 
-const TodoCard: React.FC<IProps> = ({ todo, todoIndex }) => {
+const TodoCard: React.FC<IProps> = ({ todo, todoIndex, token }) => {
   const { setTodos } = useContext(AppContext);
 
   const deleteTodo = async () => {
-    await TodoApi.deleteTodo(todo._id);
+    await TodoApi.deleteTodo(todo._id, token);
     await updateList();
   }
 
@@ -25,8 +26,9 @@ const TodoCard: React.FC<IProps> = ({ todo, todoIndex }) => {
   }
 
   const updateList = async () => {
-    const updatedTodos = await TodoApi.getTodos();
-    setTodos(updatedTodos);
+    const response: { name: string, todos: ITodoRegistred[] | [] } =
+      await TodoApi.getTodos(token);
+    setTodos(response.todos);
   }
 
   return (

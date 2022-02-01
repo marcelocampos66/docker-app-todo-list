@@ -5,11 +5,15 @@ import TodoCard from '../TodoCard';
 import Styled from './S.TodoList';
 
 const TodoList: React.FC = () => {
-  const { todos, setTodos } = useContext(AppContext);
+  const { todos, setTodos, setName } = useContext(AppContext);
+
+  const user: ILocalStorage = JSON.parse(localStorage.getItem('user')!);
 
   const getTodos = async () => {
-    const allTodos: ITodoRegistred[] | [] = await TodoApi.getTodos();
-    const ordenedTodos: ITodoRegistred[] | []  = allTodos
+    const response: { name: string, todos: ITodoRegistred[] | [] } =
+      await TodoApi.getTodos(user.token);
+    setName(response.name);
+    const ordenedTodos: ITodoRegistred[] | []  = [...response.todos]
       .sort((a, b) => a.order - b.order);
     setTodos(ordenedTodos);
   }
@@ -26,6 +30,7 @@ const TodoList: React.FC = () => {
             key={ todo._id }
             todo={ todo }
             todoIndex={ index + 1 }
+            token={ user.token }
           />
         ))
       }

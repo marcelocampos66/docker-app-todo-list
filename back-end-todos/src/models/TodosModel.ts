@@ -8,32 +8,34 @@ class TodosModel extends Connection {
 
   public async register(newTodo: INewTodo) {
     return this.connection()
-      .then((db) => db.collection('todos').insertOne(newTodo))
+      .then((db) => db.collection(this.MONGO_DB).insertOne(newTodo))
       .then(({ insertedId }) => insertedId);
   }
 
-  public async getAll() {
+  public async getAll(userId: string) {
     return this.connection()
-      .then((db) => db.collection('todos').find().toArray());
+      .then((db) => db.collection(this.MONGO_DB)
+      .find({ userId }).toArray());
   }
 
-  public async getById(id: string) {
+  public async getById(id: string, userId: string) {
     return this.connection()
-      .then((db) => db.collection('todos').findOne({ _id: new ObjectId(id) }));
+      .then((db) => db.collection(this.MONGO_DB)
+      .findOne({ _id: new ObjectId(id), userId }));
   }
 
   public async update(id: string, newInfos: IUpdateTodo) {
     return this.connection()
-      .then((db) => db.collection('todos')
+      .then((db) => db.collection(this.MONGO_DB)
       .updateOne(
         { _id: new ObjectId(id) }, { $set: newInfos }
       ));
   }
 
-  public async delete(id: string) {
+  public async delete(id: string, userId: string) {
     return this.connection()
-      .then((db) => db.collection('todos')
-      .deleteOne({ _id: new ObjectId(id) }));
+      .then((db) => db.collection(this.MONGO_DB)
+      .deleteOne({ _id: new ObjectId(id), userId }));
   }
 
 }

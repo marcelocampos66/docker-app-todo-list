@@ -1,32 +1,29 @@
-import React, { useContext } from 'react';
-import AppContext from '../../context/AppContext';
+import React from 'react';
 import Styled from './S.TextInput';
 
 interface IProps {
+  type: string;
   name: string;
   labelText: string;
   placeholder: string;
   value: string;
+  handleChange: onChange;
 }
 
 const TextInput: React.FC<IProps> = ({
+  type,
   name,
   labelText,
   placeholder,
   value,
+  handleChange,
 }) => {
-  const { todo, setTodo } = useContext(AppContext);
-
-  const handleChange: onChange = ({ target: { name, value } }) => {
-    setTodo({ ...todo, [name]: value });
-  }
-
   return (
     <Styled.Div>
       <Styled.Label>
         { labelText }
         <Styled.Input
-          type="text"
+          type={ type }
           onChange={
             (e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)
           }
