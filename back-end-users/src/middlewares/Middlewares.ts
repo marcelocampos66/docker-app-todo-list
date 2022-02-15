@@ -2,14 +2,14 @@ import 'dotenv/config';
 import { Request, Response, NextFunction } from 'express';
 import { ObjectId } from 'mongodb';
 import Helpers from '../helpers/Helpers';
-import { IModels } from '../models';
+import UsersModel from '../models/UsersModel';
 
 class Middlewares {
-  protected models: IModels;
+  protected usersModel: UsersModel;
   protected helpers: Helpers;
 
-  constructor(models: IModels, helpers: Helpers) {
-    this.models = models;
+  constructor(usersModel: UsersModel, helpers: Helpers) {
+    this.usersModel = usersModel;
     this.helpers = helpers;
   }
 
@@ -53,7 +53,7 @@ class Middlewares {
         message: 'Invalid Id',
       });
     }
-    const userExists = await this.models.users.getById(id);
+    const userExists = await this.usersModel.getById(id);
     if (!userExists) {
       return next({
         status: 404,
@@ -69,7 +69,7 @@ class Middlewares {
     next: NextFunction,
   ) => {
     const { body: { email } } = req;
-    const userExists = await this.models.users.getByEmail(email);
+    const userExists = await this.usersModel.getByEmail(email);
     if (userExists) {
       return next({ status: 409, message: 'User already exists' });
     }

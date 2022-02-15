@@ -1,19 +1,18 @@
 import express, { Request, Response, NextFunction } from 'express';
 import Middlewares from '../middlewares/Middlewares';
 import { UsersService } from '../services/UsersService';
-import { IModels } from '../models';
-import Helpers from '../helpers/Helpers';
+import { IUsersControllerParams } from '../factories';
 
 class UsersController extends Middlewares {
   public router: express.Router;
   private service: UsersService;
   
-  constructor(
-    service: UsersService,
-    models: IModels,
-    helpers: Helpers,
-  ) {
-    super(models, helpers);
+  constructor({
+    service,
+    usersModel,
+    helpers,
+  }: IUsersControllerParams) {
+    super(usersModel, helpers);
     this.router = express.Router();
     this.service = service;
     this.initializeRouters();

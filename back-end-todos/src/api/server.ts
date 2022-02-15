@@ -1,9 +1,7 @@
 import 'dotenv/config';
-import App from '../api/App';
-import controllers from '../controllers';
+import factory from '../factories';
+import App from './App';
 
-const PORT: number = Number(process.env.PORT) || 3001;
-
-const server: App = new App(PORT, controllers);
+const server: App = factory.getApp();
 
 server.startServer();

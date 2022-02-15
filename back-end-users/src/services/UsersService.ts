@@ -1,14 +1,17 @@
-import models from '../models';
 import Helpers from "../helpers/Helpers";
-import { IModels } from "../models";
 import { ObjectId } from 'mongodb';
+import { IUsersModelParams } from "../factories";
+import UsersModel from "../models/UsersModel";
 
 export class UsersService {
-  private models: IModels;
+  private usersModel: UsersModel;
   private helpers: Helpers;
 
-  constructor(helpers: Helpers, models: IModels) {
-    this.models = models;
+  constructor({
+    helpers,
+    usersModel,
+  }: IUsersModelParams) {
+    this.usersModel = usersModel;
     this.helpers = helpers;
   }
 
@@ -18,31 +21,31 @@ export class UsersService {
       password: this.helpers.hashPassword(user.password),
       birthDate: this.helpers.formatBirthDate(user.birthDate),
     };
-    const userId: ObjectId = await this.models.users.register(formatedUser);
-    return this.models.users.getById(userId.toString());
+    const userId: ObjectId = await this.usersModel.register(formatedUser);
+    return this.usersModel.getById(userId.toString());
   }
 
   public async getAll() {
-    return this.models.users.getAll();
+    return this.usersModel.getAll();
   }
 
   public async getById(id: string) {
-    return this.models.users.getById(id);
+    return this.usersModel.getById(id);
   }
 
   public async update(id: string, newDate: IUser) {
-    await this.models.users.update(id, newDate);
-    return this.models.users.getById(id);
+    await this.usersModel.update(id, newDate);
+    return this.usersModel.getById(id);
   }
 
   public async delete(id: string) {
-    await this.models.users.delete(id);
+    await this.usersModel.delete(id);
     return { message: 'User deleted successfully' };
   }
 
   public async login(email: string, password: string) {
     const hashedPassword = this.helpers.hashPassword(password);
-    const user = await this.models.users.login(
+    const user = await this.usersModel.login(
       email,
       hashedPassword,
     );
@@ -56,4 +59,4 @@ export class UsersService {
 
 }
 
-export default new UsersService(new Helpers(), models);
+export default UsersService;

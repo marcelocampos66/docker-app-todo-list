@@ -2,17 +2,21 @@ import express from "express";
 import cors from 'cors';
 import bodyParser from "body-parser";
 import errorMiddleware from '../middlewares/errorMiddleware';
-import { IControllers } from "../controllers";
+import UsersController from "../controllers/UsersController";
+import { IAppParams } from "../factories";
 
 class App {
   private app: express.Application;
   private port: number;
-  private controllers: IControllers;
+  private usersController: UsersController;
 
-  constructor(port: number, controllers: IControllers) {
+  constructor({
+    port,
+    usersController,
+  }: IAppParams) {
     this.app = express();
     this.port = port;
-    this.controllers = controllers;
+    this.usersController = usersController;
     this.initializeMiddlewares();
     this.callRoutes();
     this.handleErrors();
@@ -25,7 +29,7 @@ class App {
   }
 
   private callRoutes(): void {
-    this.app.use('/users', this.controllers.users.router);
+    this.app.use('/users', this.usersController.router);
   }
 
   private handleErrors(): void {

@@ -1,6 +1,6 @@
-import models, { IModels } from '../models';
+import { IModels } from "../factories";
 
-export class TodosService {
+class TodosService {
   private models: IModels;
 
   constructor(models: IModels) {
@@ -40,4 +40,4 @@ export class TodosService {
   
 }
 
-export default new TodosService(models);
+export default TodosService;
