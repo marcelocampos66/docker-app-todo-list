@@ -36,4 +36,6 @@ export const DEFAULT_STATE = {
 
 const AppContext = createContext<IAppContext>(DEFAULT_STATE);
 
+AppContext.displayName='App Context';
+
 export default AppContext;
