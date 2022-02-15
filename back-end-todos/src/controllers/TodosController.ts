@@ -1,12 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express';
+import { ITodosService } from '../factories';
 import Middlewares from '../middlewares/Middlewares';
-import { TodosService } from '../services/TodosService';
+import TodosService from '../services/TodosService';
 
 class TodosController extends Middlewares {
   public router: express.Router;
   private service: TodosService;
 
-  constructor(service: TodosService) {
+  constructor({ service }: ITodosService) {
     super();
     this.router = express.Router();
     this.service = service;

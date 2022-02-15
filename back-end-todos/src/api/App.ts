@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import bodyParser from 'body-parser';
 import errorMiddleware from "../middlewares/errorMiddleware";
-import { IControllers } from "../controllers";
+import { IControllers } from "../factories";
 
 class App {
   public app: express.Application;
