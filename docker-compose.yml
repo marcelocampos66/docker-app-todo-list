@@ -26,6 +26,7 @@ services:
       - MONGO_DB_URL=mongodb://users-database:27017
       - MONGO_DB=users
       - JWT_SECRET=valhallaawaits
+      - REDIS_URL=redis://redis-database:6379
     depends_on:
       - "users-database"
     restart: always
@@ -43,6 +44,7 @@ services:
       - MONGO_DB_URL=mongodb://todos-database:27017
       - MONGO_DB=todos
       - JWT_SECRET=valhallaawaits
+      - REDIS_URL=redis://redis-database:6379
     depends_on:
       - "todos-database"
     restart: always
@@ -60,6 +62,15 @@ services:
     networks:
       - todo-app
     restart: always
+  
+  redis-database:
+    image: redis
+    container_name: database-redis
+    networks:
+      - todo-app
+    restart: always
+    ports:
+      - "6379:6379"
 
 networks:
     todo-app:

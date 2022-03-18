@@ -1,7 +1,9 @@
+import 'dotenv/config';
 import Helpers from "../helpers/Helpers";
 import { ObjectId } from 'mongodb';
 import { IUsersModelParams } from "../factories";
 import UsersModel from "../models/UsersModel";
+import { createClient } from 'redis';
 
 export class UsersService {
   private usersModel: UsersModel;
@@ -52,6 +54,17 @@ export class UsersService {
     if (!user) return;
     const userData = user as IRegisteredUser;
     const formatedData = this.helpers.getUserNecessaryData(userData);
+
+    const refreshToken = this.helpers.generateRefreshToken(formatedData);
+    const url = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
+    const client = createClient({
+      url
+    });
+    await client.connect();
+    await client.set(userData._id.toString(), refreshToken, {
+      EX: 60 * 60 * 24,
+    });
+
     return ({
       token: this.helpers.generateToken(formatedData),
     });
