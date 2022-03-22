@@ -7,8 +7,8 @@ class TodosController extends Middlewares {
   public router: express.Router;
   private service: TodosService;
 
-  constructor({ service }: ITodosService) {
-    super();
+  constructor({ service, handleToken, handleRefreshToken }: ITodosService) {
+    super({ handleToken, handleRefreshToken });
     this.router = express.Router();
     this.service = service;
     this.initializeRouters();
@@ -45,7 +45,7 @@ class TodosController extends Middlewares {
       body: { order, todo, priority, isDone },
       payload: { id },
     } = req;
-    const todoData = { order, todo, priority, isDone, userId: id };
+    const todoData: INewTodo = { order, todo, priority, isDone, userId: id };
     const result = await this.service.register(todoData);
     return res.status(201).json(result);
   }
