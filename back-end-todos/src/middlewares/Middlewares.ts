@@ -27,16 +27,18 @@ class Middlewares {
       return res.status(401).json({ message: 'Token not found' });
     }
   
-    const tokenIsValid: boolean | IPayload =
-      await this.handleToken.execute(authorization);
+    const tokenIsValid: boolean = this.handleToken.isValid(authorization);
 
-    if (typeof tokenIsValid !== 'boolean') {
-      req.payload = tokenIsValid;
-      return next();
-    }
     if (!tokenIsValid) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
+
+    if (tokenIsValid && !this.handleToken.isExpired) {
+      const payload: IPayload = this.handleToken.getPayload();
+      req.payload = payload;
+      return next();
+    }
+
     const refreshToken: IPayload | null =
       await this.handleRefreshToken.execute(authorization);
     
