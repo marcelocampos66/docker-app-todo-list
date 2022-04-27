@@ -1,6 +1,6 @@
-import { createClient } from 'redis';
 import 'dotenv/config';
 import jwt from 'jsonwebtoken';
+import redisClient from '../common/redisClient';
 
 class HandleRefreshToken {
   private REDIS_URL: string;
@@ -10,11 +10,10 @@ class HandleRefreshToken {
   }
 
   private async getRefreshToken(id: string): Promise<string | null> {
-    const client = createClient({
-      url: this.REDIS_URL
-    });
-    await client.connect();
-    return client.get(id);
+    await redisClient.connect();
+    const refreshToken = await redisClient.get(id);
+    await redisClient.quit();
+    return refreshToken;
   }
 
   private decodeToken(token: string): IPayload {

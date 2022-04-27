@@ -3,7 +3,7 @@ class TodoApi {
   private content: string;
 
   constructor() {
-    this.url = 'http://0.0.0.0:3001';
+    this.url = process.env.REACT_APP_TODO_LIST_API ||'http://0.0.0.0:3001';
     this.content = 'application/json';
   }
 

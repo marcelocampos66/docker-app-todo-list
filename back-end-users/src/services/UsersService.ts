@@ -3,7 +3,9 @@ import Helpers from "../helpers/Helpers";
 import { ObjectId } from 'mongodb';
 import { IUsersModelParams } from "../factories";
 import UsersModel from "../models/UsersModel";
-import { createClient } from 'redis';
+import redisClient from '../common/redisClient';
+
+const ONE_DAY = 60 * 60 * 24;
 
 export class UsersService {
   private usersModel: UsersModel;
@@ -56,14 +58,12 @@ export class UsersService {
     const formatedData = this.helpers.getUserNecessaryData(userData);
 
     const refreshToken = this.helpers.generateRefreshToken(formatedData);
-    const url = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
-    const client = createClient({
-      url
+
+    await redisClient.connect();
+    await redisClient.set(userData._id.toString(), refreshToken, {
+      EX: ONE_DAY,
     });
-    await client.connect();
-    await client.set(userData._id.toString(), refreshToken, {
-      EX: 60 * 60 * 24,
-    });
+    await redisClient.quit();
 
     return ({
       token: this.helpers.generateToken(formatedData),

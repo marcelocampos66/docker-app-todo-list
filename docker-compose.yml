@@ -6,6 +6,9 @@ services:
     container_name: frontend
     ports:
       - "3000:80"
+    environment:
+      - REACT_APP_TODO_LIST_API=http://0.0.0.0:3001
+      - REACT_APP_USERS_API=http://0.0.0.0:3002
     depends_on:
       - "backend-todos"
       - "backend-users"
@@ -27,6 +30,7 @@ services:
       - MONGO_DB=users
       - JWT_SECRET=valhallaawaits
       - REDIS_URL=redis://redis-database:6379
+      - REDIS_DB_NUMBER=15
     depends_on:
       - "users-database"
     restart: always
@@ -45,6 +49,7 @@ services:
       - MONGO_DB=todos
       - JWT_SECRET=valhallaawaits
       - REDIS_URL=redis://redis-database:6379
+      - REDIS_DB_NUMBER=15
     depends_on:
       - "todos-database"
     restart: always
