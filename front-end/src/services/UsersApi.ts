@@ -3,7 +3,7 @@ class UsersApi {
   private content: string;
 
   constructor() {
-    this.url = 'http://0.0.0.0:3002';
+    this.url = process.env.REACT_APP_USERS_API ||'http://0.0.0.0:3002';
     this.content = 'application/json';
   }
 

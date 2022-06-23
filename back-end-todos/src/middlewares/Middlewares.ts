@@ -1,12 +1,20 @@
 import 'dotenv/config';
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import HandleToken from '../utils/HandleToken';
+import HandleRefreshToken from '../utils/HandleRefreshToken';
+
+interface IParams {
+  handleToken: HandleToken;
+  handleRefreshToken: HandleRefreshToken;
+}
 
 class Middlewares {
-  private secret: jwt.Secret
+  private handleToken: HandleToken;
+  private handleRefreshToken: HandleRefreshToken;
 
-  constructor() {
-    this.secret = process.env.JWT_SECRET || 'secret';
+  constructor({ handleToken, handleRefreshToken }: IParams) {
+    this.handleToken = handleToken;
+    this.handleRefreshToken = handleRefreshToken;
   }
 
   public validateJWT = async (
@@ -18,16 +26,28 @@ class Middlewares {
     if (!authorization) {
       return res.status(401).json({ message: 'Token not found' });
     }
-    try {
-      const payload = jwt.verify(authorization, this.secret);
-      if (!payload) {
-        return res.status(401).json({ message: 'Expired or invalid token' });
-      }
-      req.payload = payload;
-      return next();
-    } catch (e) {
+  
+    const tokenIsValid: boolean = this.handleToken.isValid(authorization);
+
+    if (!tokenIsValid) {
       return res.status(401).json({ message: 'Expired or invalid token' });
     }
+
+    if (tokenIsValid && !this.handleToken.isExpired) {
+      const payload: IPayload = this.handleToken.getPayload();
+      req.payload = payload;
+      return next();
+    }
+
+    const refreshToken: IPayload | null =
+      await this.handleRefreshToken.execute(authorization);
+    
+    if (!refreshToken) {
+      return res.status(401).json({ message: 'Expired or invalid token' });
+    }
+
+    req.payload = refreshToken;
+    return next();
   };
 
 }

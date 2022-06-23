@@ -3,6 +3,8 @@ import App from '../api/App';
 import TodosController from '../controllers/TodosController';
 import TodosService from '../services/TodosService';
 import TodosModel from '../models/TodosModel';
+import HandleToken from '../utils/HandleToken';
+import HandleRefreshToken from '../utils/HandleRefreshToken';
 
 const PORT: number = Number(process.env.PORT) || 3001;
 
@@ -16,6 +18,8 @@ export interface IModels {
 
 export interface ITodosService {
   service: TodosService;
+  handleToken: HandleToken;
+  handleRefreshToken: HandleRefreshToken;
 }
 
 const getTodosModel = (): TodosModel => {
@@ -31,6 +35,8 @@ const getTodosService = (): TodosService => {
 const getTodosController = (): TodosController => {
   return new TodosController({
     service: getTodosService(),
+    handleToken: new HandleToken(),
+    handleRefreshToken: new HandleRefreshToken(),
   });
 };
 

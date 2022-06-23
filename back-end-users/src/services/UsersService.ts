@@ -1,7 +1,11 @@
+import 'dotenv/config';
 import Helpers from "../helpers/Helpers";
 import { ObjectId } from 'mongodb';
 import { IUsersModelParams } from "../factories";
 import UsersModel from "../models/UsersModel";
+import redisClient from '../common/redisClient';
+
+const ONE_DAY = 60 * 60 * 24;
 
 export class UsersService {
   private usersModel: UsersModel;
@@ -52,6 +56,15 @@ export class UsersService {
     if (!user) return;
     const userData = user as IRegisteredUser;
     const formatedData = this.helpers.getUserNecessaryData(userData);
+
+    const refreshToken = this.helpers.generateRefreshToken(formatedData);
+
+    await redisClient.connect();
+    await redisClient.set(userData._id.toString(), refreshToken, {
+      EX: ONE_DAY,
+    });
+    await redisClient.quit();
+
     return ({
       token: this.helpers.generateToken(formatedData),
     });
